@@ -54,9 +54,9 @@ window.addEventListener("DOMContentLoaded", () => {
       seconds: seconds,
     };
   }
-  
-  function getZero(num){
-    if (num>=0 && num<10){
+
+  function getZero(num) {
+    if (num >= 0 && num < 10) {
       return `0${num}`;
     } else {
       return num;
@@ -73,17 +73,65 @@ window.addEventListener("DOMContentLoaded", () => {
     updateClock();
     function updateClock() {
       const t = getTimeRemaining(endtime);
-      
+
       days.innerHTML = getZero(t.days);
       hours.innerHTML = getZero(t.hours);
       minutes.innerHTML = getZero(t.minutes);
       seconds.innerHTML = getZero(t.seconds);
 
-      if (t.total<=0){
+      if (t.total <= 0) {
         clearInterval(timeInterval);
       }
     }
   }
 
   setClock(".timer", deadline);
+
+  //modal
+
+  const modalOpen = document.querySelectorAll("[data-modal]");
+  const modal = document.querySelector(".modal");
+  const modalClose = document.querySelector("[data-close]");
+
+  function openModal() {
+    modal.classList.toggle("hide");
+    document.body.style.overflow = "hidden";
+    clearInterval(modalTimerId);
+  }
+
+  function closeModal() {
+    modal.classList.toggle("hide");
+    document.body.style.overflow = "";
+  }
+
+  modalOpen.forEach((btn) => {
+    btn.addEventListener("click", openModal);
+  });
+  modalClose.addEventListener("click", closeModal);
+
+  modal.addEventListener("click", (event) => {
+    const target = event.target;
+    if (target && target === modal) {
+      closeModal();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.code === "Escape" && !modal.classList.contains("hide")) {
+      closeModal();
+    }
+  });
+
+  function openModalByScroll() {
+    if (
+      window.pageYOffset + document.documentElement.clientHeight ===
+      document.documentElement.scrollHeight
+    ) {
+      openModal();
+    }
+    window.removeEventListener("scroll", openModalByScroll);
+  }
+
+  const modalTimerId = setTimeout(openModal, 5000);
+  window.addEventListener("scroll", openModalByScroll);
 });

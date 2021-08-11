@@ -180,7 +180,50 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  setClock(".timer", deadline);
+  setClock(".timer", deadline); //modal
+
+  const modalOpen = document.querySelectorAll("[data-modal]");
+  const modal = document.querySelector(".modal");
+  const modalClose = document.querySelector("[data-close]");
+
+  function openModal() {
+    modal.classList.toggle("hide");
+    document.body.style.overflow = "hidden";
+    clearInterval(modalTimerId);
+  }
+
+  function closeModal() {
+    modal.classList.toggle("hide");
+    document.body.style.overflow = "";
+  }
+
+  modalOpen.forEach(btn => {
+    btn.addEventListener("click", openModal);
+  });
+  modalClose.addEventListener("click", closeModal);
+  modal.addEventListener("click", event => {
+    const target = event.target;
+
+    if (target && target === modal) {
+      closeModal();
+    }
+  });
+  document.addEventListener("keydown", event => {
+    if (event.code === "Escape" && !modal.classList.contains("hide")) {
+      closeModal();
+    }
+  });
+
+  function openModalByScroll() {
+    if (window.pageYOffset + document.documentElement.clientHeight === document.documentElement.scrollHeight) {
+      openModal();
+    }
+
+    window.removeEventListener("scroll", openModalByScroll);
+  }
+
+  const modalTimerId = setTimeout(openModal, 5000);
+  window.addEventListener("scroll", openModalByScroll);
 });
 
 /***/ })
