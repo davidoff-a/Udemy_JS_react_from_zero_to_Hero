@@ -133,7 +133,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }); // timer
 
-  const deadline = "2021-08-15";
+  const deadline = "2022-01-01";
 
   function getTimeRemaining(endtime) {
     const t = Date.parse(endtime) - Date.parse(new Date());
@@ -195,6 +195,7 @@ window.addEventListener("DOMContentLoaded", () => {
   function closeModal() {
     modal.classList.toggle("hide");
     document.body.style.overflow = "";
+    clearInterval(modalTimerId);
   }
 
   modalOpen.forEach(btn => {
@@ -224,6 +225,40 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const modalTimerId = setTimeout(openModal, 5000);
   window.addEventListener("scroll", openModalByScroll);
+}); // Menu Cards
+
+const $MENU = document.querySelector(".menu__field .container");
+const MENU_DATA = [["vegy", "Фитнес", 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!', "229"], ["elite", "Премиум", "В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!", "550"], ["post", "Постное", "Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.", "430"]];
+
+class Menu {
+  constructor(imgName, menuTitle, menuDescr, price) {
+    this.imgName = imgName;
+    this.menuTitle = menuTitle;
+    this.menuDescr = menuDescr;
+    this.price = price;
+  }
+
+  generateMenuItem() {
+    const MENU_ITEM = `
+      <div class="menu__item">
+          <img src="img/tabs/${this.imgName}.jpg" alt="${this.imgName}">
+          <h3 class="menu__item-subtitle">Меню "${this.menuTitle}"</h3>
+          <div class="menu__item-descr">${this.menuDescr}</div>
+          <div class="menu__item-divider"></div>
+          <div class="menu__item-price">
+              <div class="menu__item-cost">Цена:</div>
+              <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+          </div>
+      </div>
+      `;
+    return MENU_ITEM;
+  }
+
+}
+
+MENU_DATA.forEach(menuItem => {
+  const MENU_ITEM = new Menu(menuItem[0], menuItem[1], menuItem[2], menuItem[3]);
+  $MENU.insertAdjacentHTML("beforeend", MENU_ITEM.generateMenuItem());
 });
 
 /***/ })
