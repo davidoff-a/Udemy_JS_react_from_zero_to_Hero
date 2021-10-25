@@ -228,17 +228,23 @@ window.addEventListener("DOMContentLoaded", () => {
 }); // Menu Cards
 
 const $MENU = document.querySelector(".menu__field .container");
-const MENU_DATA = [["vegy", "Фитнес", 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!', "229"], ["elite", "Премиум", "В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!", "550"], ["post", "Постное", "Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.", "430"]];
+const MENU_DATA = [["vegy", "Фитнес", 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!', 9], ["elite", "Премиум", "В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!", 21], ["post", "Постное", "Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.", 14]];
 
-class Menu {
+class MenuCard {
   constructor(imgName, menuTitle, menuDescr, price) {
     this.imgName = imgName;
     this.menuTitle = menuTitle;
     this.menuDescr = menuDescr;
     this.price = price;
+    this.transfer = 27;
+    this.changeToUAH();
   }
 
-  generateMenuItem() {
+  changeToUAH() {
+    this.price = +this.price * this.transfer;
+  }
+
+  render() {
     const MENU_ITEM = `
       <div class="menu__item">
           <img src="img/tabs/${this.imgName}.jpg" alt="${this.imgName}">
@@ -257,8 +263,8 @@ class Menu {
 }
 
 MENU_DATA.forEach(menuItem => {
-  const MENU_ITEM = new Menu(menuItem[0], menuItem[1], menuItem[2], menuItem[3]);
-  $MENU.insertAdjacentHTML("beforeend", MENU_ITEM.generateMenuItem());
+  const MENU_ITEM = new MenuCard(menuItem[0], menuItem[1], menuItem[2], menuItem[3]);
+  $MENU.insertAdjacentHTML("beforeend", MENU_ITEM.render());
 });
 
 /***/ })
