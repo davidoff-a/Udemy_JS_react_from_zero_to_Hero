@@ -225,6 +225,10 @@ MENU_DATA.forEach((menuItem) => {
         if (request.status === 200) {
           console.log(request.response);
           $STATUS_MESSAGE.textContent = MESSAGE.success;
+          form.reset;
+          setTimeout(() => {
+            $STATUS_MESSAGE.remove();
+          }, 2000);
         } else {
           $STATUS_MESSAGE.textContent = MESSAGE.failure;
         }
