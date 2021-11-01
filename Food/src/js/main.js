@@ -218,7 +218,7 @@ MENU_DATA.forEach((menuItem) => {
       form.append(STATUS_MESSAGE);
       const request = new XMLHttpRequest();
       request.open("POST", "server.php");
-      request.setRequestHeader("content-type", "multipart/form-data");
+      // request.setRequestHeader("content-type", "multipart/form-data");
       const formData = new FormData(form);
       request.send(formData);
       request.addEventListener("load", () => {
