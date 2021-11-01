@@ -265,6 +265,38 @@ class MenuCard {
 MENU_DATA.forEach(menuItem => {
   const MENU_ITEM = new MenuCard(menuItem[0], menuItem[1], menuItem[2], menuItem[3]);
   $MENU.insertAdjacentHTML("beforeend", MENU_ITEM.render());
+  const $FORMS = document.querySelectorAll("form");
+  $FORMS.forEach(item => {
+    postData(item);
+  });
+  const MESSAGE = {
+    loading: "Loading",
+    success: "Thank you. Let's keep in touch",
+    failure: "It's gonna blow!!!"
+  };
+
+  function postData(form) {
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+      const $STATUS_MESSAGE = document.createElement("div");
+      $STATUS_MESSAGE.classList.add("status");
+      $STATUS_MESSAGE.textContent = MESSAGE.loading;
+      form.append(STATUS_MESSAGE);
+      const request = new XMLHttpRequest();
+      request.open("POST", "server.php");
+      request.setRequestHeader("content-type", "multipart/form-data");
+      const formData = new FormData(form);
+      request.send(formData);
+      request.addEventListener("load", () => {
+        if (request.status === 200) {
+          console.log(request.response);
+          $STATUS_MESSAGE.textContent = MESSAGE.success;
+        } else {
+          $STATUS_MESSAGE.textContent = MESSAGE.failure;
+        }
+      });
+    });
+  }
 });
 
 /***/ })

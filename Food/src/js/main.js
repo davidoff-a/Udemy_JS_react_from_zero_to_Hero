@@ -5,7 +5,6 @@ window.addEventListener("DOMContentLoaded", () => {
   const tabs = document.querySelectorAll(".tabheader__item");
   const tabContent = document.querySelectorAll(".tabcontent");
   const tabsParent = document.querySelector(".tabheader__items");
-  
 
   function hideTabContent() {
     tabContent.forEach((item) => {
@@ -138,7 +137,6 @@ window.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", openModalByScroll);
 });
 
-
 // Menu Cards
 
 const $MENU = document.querySelector(".menu__field .container");
@@ -174,8 +172,8 @@ class MenuCard {
   changeToUAH() {
     this.price = +this.price * this.transfer;
   }
-    render(){
-      const MENU_ITEM = `
+  render() {
+    const MENU_ITEM = `
       <div class="menu__item">
           <img src="img/tabs/${this.imgName}.jpg" alt="${this.imgName}">
           <h3 class="menu__item-subtitle">Меню "${this.menuTitle}"</h3>
@@ -187,8 +185,8 @@ class MenuCard {
           </div>
       </div>
       `;
-      return MENU_ITEM;
-    }
+    return MENU_ITEM;
+  }
 }
 
 MENU_DATA.forEach((menuItem) => {
@@ -199,4 +197,38 @@ MENU_DATA.forEach((menuItem) => {
     menuItem[3]
   );
   $MENU.insertAdjacentHTML("beforeend", MENU_ITEM.render());
+
+  const $FORMS = document.querySelectorAll("form");
+  $FORMS.forEach((item) => {
+    postData(item);
+  });
+
+  const MESSAGE = {
+    loading: "Loading",
+    success: "Thank you. Let's keep in touch",
+    failure: "It's gonna blow!!!",
+  };
+
+  function postData(form) {
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const $STATUS_MESSAGE = document.createElement("div");
+      $STATUS_MESSAGE.classList.add("status");
+      $STATUS_MESSAGE.textContent = MESSAGE.loading;
+      form.append(STATUS_MESSAGE);
+      const request = new XMLHttpRequest();
+      request.open("POST", "server.php");
+      request.setRequestHeader("content-type", "multipart/form-data");
+      const formData = new FormData(form);
+      request.send(formData);
+      request.addEventListener("load", () => {
+        if (request.status === 200) {
+          console.log(request.response);
+          $STATUS_MESSAGE.textContent = MESSAGE.success;
+        } else {
+          $STATUS_MESSAGE.textContent = MESSAGE.failure;
+        }
+      });
+    });
+  }
 });
