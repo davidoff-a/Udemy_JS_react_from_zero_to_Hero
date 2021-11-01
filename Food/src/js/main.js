@@ -212,14 +212,28 @@ MENU_DATA.forEach((menuItem) => {
   function postData(form) {
     form.addEventListener("submit", (event) => {
       event.preventDefault();
+
       const $STATUS_MESSAGE = document.createElement("div");
+
       $STATUS_MESSAGE.classList.add("status");
       $STATUS_MESSAGE.textContent = MESSAGE.loading;
       form.append(STATUS_MESSAGE);
+
       const request = new XMLHttpRequest();
+
       request.open("POST", "server.php");
-      // request.setRequestHeader("content-type", "multipart/form-data");
+      request.setRequestHeader("content-type", "application/json");
+
       const formData = new FormData(form);
+
+      const object = {};
+
+      formData.forEach((value, key) => {
+        object[key] = value;
+      });
+      const json = JSON.stringify(object);
+      request.send(json);
+
       request.send(formData);
       request.addEventListener("load", () => {
         if (request.status === 200) {

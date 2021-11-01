@@ -283,9 +283,15 @@ MENU_DATA.forEach(menuItem => {
       $STATUS_MESSAGE.textContent = MESSAGE.loading;
       form.append(STATUS_MESSAGE);
       const request = new XMLHttpRequest();
-      request.open("POST", "server.php"); // request.setRequestHeader("content-type", "multipart/form-data");
-
+      request.open("POST", "server.php");
+      request.setRequestHeader("content-type", "application/json");
       const formData = new FormData(form);
+      const object = {};
+      formData.forEach((value, key) => {
+        object[key] = value;
+      });
+      const json = JSON.stringify(object);
+      request.send(json);
       request.send(formData);
       request.addEventListener("load", () => {
         if (request.status === 200) {
