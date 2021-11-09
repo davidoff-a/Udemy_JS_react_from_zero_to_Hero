@@ -1,12 +1,16 @@
-import "./app.css"
+import "./app.css";
 import AppInfo from "../app-info/app-info";
 import SearchPanel from "../search-panel/search-panel";
 import AppFilter from "../app-filter/app-filter";
 import EmployeesList from "../employees-list/employees-list";
 import EmployeesAddForm from "../employees-add-form/employees-add-form";
 
-
-function App(){
+function App() {
+  const data = [
+    { name: "John C.", salary: 800, increase: false },
+    { name: "Sarah C.", salary: 3000, increase: true },
+    { name: "T1000 C.", salary: 15000, increase: false },
+  ];
   return (
     <div className='app'>
       <AppInfo />
@@ -14,7 +18,7 @@ function App(){
         <SearchPanel />
         <AppFilter />
       </div>
-      <EmployeesList />
+      <EmployeesList data={data} />
       <EmployeesAddForm />
     </div>
   );
