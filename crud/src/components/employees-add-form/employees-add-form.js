@@ -19,8 +19,11 @@ class EmployeesAddForm extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const { onAdd } = this.props;
-    onAdd(this.state);
+    this.props.onAdd(this.state.name, this.state.salary);
+    this.setState({
+      name: "",
+      salary: "",
+    });
   };
 
   render() {
@@ -40,12 +43,16 @@ class EmployeesAddForm extends Component {
           <input
             type='number'
             className='form-control new-post-label'
-            placeholder='З/П в 1?'
+            placeholder='З/П в $?'
             name='salary'
             value={salary}
             onChange={this.onValueChange}
           />
-          <button className='btn btn-outline-light' type='submit'>
+          <button
+            className='btn btn-outline-light'
+            type='submit'
+            onClick={this.onHireEmployee}
+          >
             Добавить
           </button>
         </form>

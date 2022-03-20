@@ -11,11 +11,11 @@ class EmployeesListItem extends Component {
     };
   }
 
-  onIncrease = () => {
-    this.setState(({ increase }) => ({
-      increase: !increase,
-    }));
-  };
+  // onIncrease = () => {
+  //   this.setState(({ increase }) => ({
+  //     increase: !increase,
+  //   }));
+  // };
 
   getUpper = () =>
     this.setState(({ star }) => ({
@@ -23,14 +23,12 @@ class EmployeesListItem extends Component {
     }));
 
   render() {
-    const { name, salary, onDelete } = this.props;
-    const { increase, star } = this.state;
+    const { name, salary, onDelete, onIncrease } = this.props;
+    const { star } = this.state;
 
     let classNames = "list-group-item d-flex justify-content-between";
     let spanClassName = "list-group-item-label";
-    if (increase) {
-      classNames += " increase";
-    }
+
     if (star) {
       classNames += " like";
     }
@@ -53,14 +51,11 @@ class EmployeesListItem extends Component {
           <button
             className='btn-cookie btn-sm'
             type='button'
-            onClick={this.onIncrease}
+            onClick={onIncrease}
           >
             <i className='fas fa-cookie'></i>
           </button>
-          <button
-            className='btn-trash btn-sm'
-            type='button'
-            onClick={onDelete}>
+          <button className='btn-trash btn-sm' type='button' onClick={onDelete}>
             <i className='fas fa-trash'></i>
           </button>
           <i className='fas fa-star'></i>
