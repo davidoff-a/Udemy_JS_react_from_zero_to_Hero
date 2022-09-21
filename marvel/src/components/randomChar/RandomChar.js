@@ -13,9 +13,9 @@ class RandomChar extends Component {
   state = {
     char: {},
     loading: true,
-    error:false
+    error: false,
   };
-  
+
   componentDidMount() {
     this.updateChar();
     // this.timerId = setInterval(this.updateChar, 3000)
@@ -23,16 +23,16 @@ class RandomChar extends Component {
   // componentWillUnmount(){
   //   clearInterval(this.timerId)
   // }
-  
+
   marvelService = new MarvelService();
 
   onCharLoaded = (char) => {
-    this.setState({char, loading:false});
+    this.setState({ char, loading: false });
   };
-  
-  onError=()=>{
-    this.setState({loading: false, error: true})
-  }
+
+  onError = () => {
+    this.setState({ loading: false, error: true });
+  };
 
   updateChar = () => {
     let id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
@@ -43,13 +43,10 @@ class RandomChar extends Component {
   };
 
   render() {
-    const {
-      char,
-      loading, error
-    } = this.state;
-    const errorMessage = error?<ErrorMessage/>:null;
-    const spinner = loading?<Spinner/>:null;
-    const content = !(loading||error)?<View char={char}/>:null;
+    const { char, loading, error } = this.state;
+    const errorMessage = error ? <ErrorMessage /> : null;
+    const spinner = loading ? <Spinner /> : null;
+    const content = !(loading || error) ? <View char={char} /> : null;
 
     return (
       <div className="randomchar">
@@ -63,7 +60,7 @@ class RandomChar extends Component {
             Do you want to get to know him better?
           </p>
           <p className="randomchar__title">Or choose another one</p>
-          <button className="button button__main">
+          <button className="button button__main" onClick={this.updateChar}>
             <div className="inner">try it</div>
           </button>
           <img src={mjolnir} alt="mjolnir" className="randomchar__decoration" />
@@ -73,22 +70,24 @@ class RandomChar extends Component {
   }
 }
 
-const View = ({char}) => {
-  const {name, description, thumbnail, wiki, homepage } = char;
-  const imgName = thumbnail.split('/').reverse()[0].slice(0, -4);
-  const imgStyle = imgName === 'image_not_available'? "contain": "cover";
-  console.log(imgStyle)
-      return (
-        <div className="randomchar__block">
+const View = ({ char }) => {
+  const { name, description, thumbnail, wiki, homepage } = char;
+  const imgName = thumbnail.split("/").reverse()[0].slice(0, -4);
+  const imgStyle = imgName === "image_not_available" ? "contain" : "cover";
+  console.log(imgStyle);
+  return (
+    <div className="randomchar__block">
       <img
         src={thumbnail}
         alt="Random character"
         className="randomchar__img"
-        style={{objectFit:imgStyle}}
+        style={{ objectFit: imgStyle }}
       />
       <div className="randomchar__info">
         <p className="randomchar__name">{name}</p>
-        <p className="randomchar__descr">{description||'SORRY, the description is not available yet'}</p>
+        <p className="randomchar__descr">
+          {description || "SORRY, the description is not available yet"}
+        </p>
         <div className="randomchar__btns">
           <a href={wiki} className="button button__main">
             <div className="inner">homepage</div>
@@ -98,7 +97,8 @@ const View = ({char}) => {
           </a>
         </div>
       </div>
-    </div>)
-}
+    </div>
+  );
+};
 
 export default RandomChar;
