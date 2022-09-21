@@ -18,11 +18,7 @@ class RandomChar extends Component {
 
   componentDidMount() {
     this.updateChar();
-    // this.timerId = setInterval(this.updateChar, 3000)
   }
-  // componentWillUnmount(){
-  //   clearInterval(this.timerId)
-  // }
 
   marvelService = new MarvelService();
 
@@ -72,16 +68,17 @@ class RandomChar extends Component {
 
 const View = ({ char }) => {
   const { name, description, thumbnail, wiki, homepage } = char;
-  const imgName = thumbnail.split("/").reverse()[0].slice(0, -4);
-  const imgStyle = imgName === "image_not_available" ? "contain" : "cover";
-  console.log(imgStyle);
+  const imgStyle = (imgPath) => {
+    const imgName = imgPath.split("/").reverse()[0].slice(0, -4);
+    return imgName === "image_not_available" ? "contain" : "cover";
+  };
   return (
     <div className="randomchar__block">
       <img
         src={thumbnail}
         alt="Random character"
         className="randomchar__img"
-        style={{ objectFit: imgStyle }}
+        style={{ objectFit: imgStyle(thumbnail) }}
       />
       <div className="randomchar__info">
         <p className="randomchar__name">{name}</p>
