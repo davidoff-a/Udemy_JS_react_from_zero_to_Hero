@@ -25,13 +25,16 @@ class MarvelService {
   };
 
   _transformCharacter = (char) => {
-    console.log(char);
     return {
+      id: char.id,
       name: char.name,
-      description: char.description,
+      description: char.description
+        ? char.description.slice(0, 210) + "..."
+        : "Sorry, the description haven't been added yet",
       thumbnail: `${char.thumbnail.path}.${char.thumbnail.extension}`,
       wiki: char.urls[0].url,
       homepage: char.urls[1].url,
+      comics: char.comics.items,
     };
   };
 }

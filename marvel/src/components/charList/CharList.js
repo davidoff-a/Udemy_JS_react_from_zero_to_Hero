@@ -47,9 +47,9 @@ class CharList extends Component {
       const imgName = imgPath.split("/").reverse()[0].slice(0, -4);
       return imgName === "image_not_available" ? "contain" : "cover";
     };
-    const addChars = chars.map((char, index) => {
+    const addChars = chars.map((char) => {
       return (
-        <li className="char__item" key={index}>
+        <li className="char__item" key={char.id} onClick={()=>this.props.onCharSelected(char.id)}>
           <img
             src={char.thumbnail}
             alt={char.name}
