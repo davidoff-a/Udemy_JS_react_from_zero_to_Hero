@@ -6,10 +6,6 @@ import Spinner from "../spinner/Spinner";
 import ErrorMessage from "../errorMessage/ErrorMessage";
 
 class RandomChar extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   state = {
     char: {},
     loading: true,
@@ -70,7 +66,9 @@ const View = ({ char }) => {
   const { name, description, thumbnail, wiki, homepage } = char;
   const imgStyle = (imgPath) => {
     const imgName = imgPath.split("/").reverse()[0].slice(0, -4);
-    return imgName === "image_not_available" ? "contain" : "cover";
+    return imgName === "image_not_available" || imgName === "4c002e0305708"
+      ? "contain"
+      : "cover";
   };
   return (
     <div className="randomchar__block">

@@ -5,55 +5,70 @@ import ErrorMessage from "../errorMessage/ErrorMessage";
 import Spinner from "../spinner/Spinner";
 
 class CharList extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   state = {
     chars: [],
     loading: true,
     error: false,
+    newItemLoading: false,
+    offset: 210,
   };
 
   marvel = new MarvelService();
 
-  onCharsLoaded = (chars) => {
-    this.setState({
-      chars: chars,
-      loading: false,
-      error: false,
-    });
-  };
   componentDidMount() {
-    this.fillChars();
-    // this.timerId = setInterval(this.updateChar, 3000)
+    console.log("mount");
+    this.onRequest();
   }
+
+  onRequest = async (offset) => {
+    this.onCharListLoading();
+    await this.marvel
+      .getAllCharacters(offset)
+      .then(this.onCharsLoaded)
+      .catch(this.onError);
+  };
+
+  onCharListLoading = () => {
+    this.setState({ newItemLoading: true });
+  };
+
+  onCharsLoaded = (newChars) => {
+    this.setState(({ offset, chars }) => ({
+      chars: [...chars, ...newChars],
+      loading: false,
+      newItemLoading: false,
+      offset: offset + 9,
+    }));
+  };
+
   onError = () => {
     this.setState({ loading: false, error: true });
   };
 
-  fillChars = () => {
-    return this.marvel
-      .getAllCharacters()
-      .then((res) => this.onCharsLoaded(res))
-      .catch(this.onError);
-  };
-
   render() {
-    const { chars, loading, error } = this.state;
+    const { chars, loading, error, newItemLoading, offset } = this.state;
+    console.log(chars);
     const errorMessage = error ? <ErrorMessage /> : null;
     const spinner = loading ? <Spinner /> : null;
     const imgStyle = (imgPath) => {
-      const imgName = imgPath.split("/").reverse()[0].slice(0, -4);
-      return imgName === "image_not_available" ? "contain" : "cover";
+      const imgName = imgPath
+        ? imgPath.split("/").reverse()[0].slice(0, -4)
+        : "";
+      return imgName === "image_not_available" || imgName === "4c002e0305708"
+        ? { objectFit: "contain" }
+        : { objectFit: "cover" };
     };
     const addChars = chars.map((char) => {
       return (
-        <li className="char__item" key={char.id} onClick={()=>this.props.onCharSelected(char.id)}>
+        <li
+          className="char__item"
+          key={char.id}
+          onClick={() => this.props.onCharSelected(char.id)}
+        >
           <img
             src={char.thumbnail}
             alt={char.name}
-            style={{ objectFit: imgStyle(char.thumbnail) }}
+            style={imgStyle(char.thumbnail)}
           />
           <div className="char__name">{char.name}</div>
         </li>
@@ -66,7 +81,11 @@ class CharList extends Component {
         {spinner}
         {errorMessage}
         <ul className="char__grid">{content}</ul>
-        <button className="button button__main button__long">
+        <button
+          className="button button__main button__long"
+          disabled={newItemLoading}
+          onClick={() => this.onRequest(offset)}
+        >
           <div className="inner">load more</div>
         </button>
       </div>

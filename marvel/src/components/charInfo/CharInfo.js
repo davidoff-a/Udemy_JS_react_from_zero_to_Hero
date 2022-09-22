@@ -36,11 +36,9 @@ class CharInfo extends Component {
   onCharLoaded = (char) => {
     this.setState({ char, loading: false });
   };
-
   onError = () => {
     this.setState({ loading: false, error: true });
   };
-
   updateChar = () => {
     const { charId } = this.props;
     if (!charId) {
@@ -81,7 +79,9 @@ const View = ({ char }) => {
   });
   const imgStyle = (imgPath) => {
     const imgName = imgPath.split("/").reverse()[0].slice(0, -4);
-    return imgName === "image_not_available" ? "contain" : "cover";
+    return imgName === "image_not_available" || imgName === "4c002e0305708"
+      ? "contain"
+      : "cover";
   };
   return (
     <>
